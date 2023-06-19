@@ -13,8 +13,9 @@ const userRouter = require('./routes/authUser');
 const MongoStore = require('connect-mongo');
 
 require('./database');
-require('./strategies/local');
+// require('./strategies/local');
 require('./strategies/google');
+
 
 
 app.use(express.json());
@@ -38,8 +39,11 @@ app.use((req, res, next) => {
 
 
 // Passport middleware
+
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 
 // Routes middleware
