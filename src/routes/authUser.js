@@ -4,12 +4,11 @@ const passport = require('passport');
 
 
 const {registerUser, loginUser} = require('../controllers/authUser');
-
 // register user
+
 router.post('/register', registerUser);
-
 // login user
-
+router.post('/login', loginUser);
 
 // logout user
 router.get('/logout', (req, res) => {

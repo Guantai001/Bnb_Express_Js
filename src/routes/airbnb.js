@@ -54,6 +54,7 @@ router.get('/:name', async (req, res) => {
 });
 
 // create one airbnb
+// create one airbnb
 router.post('/', async (req, res) => {
     const airbnb = new Airbnb({
         name: req.body.name,
@@ -61,7 +62,8 @@ router.post('/', async (req, res) => {
         price: req.body.price,
         beds: req.body.beds,
         category: req.body.category,
-        description: req.body.description
+        description: req.body.description,
+        admin: req.session.admin._id // Link the admin's ObjectId to the 'admin' field
     });
     try {
         const savedAirbnb = await airbnb.save();
@@ -72,6 +74,7 @@ router.post('/', async (req, res) => {
         });
     }
 });
+
 
 // update one airbnb
 router.put('/:name', async (req, res) => {

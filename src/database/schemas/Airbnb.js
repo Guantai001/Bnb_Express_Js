@@ -26,7 +26,18 @@ const AirbnbSchema = new mongoose.Schema({
     description: {
         type: mongoose.Schema.Types.String,
         required: true
+    },
+    admin : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'admin',
+        required: true
+    },
+    image: {
+        type: mongoose.Schema.Types.String,
+        required: true
     }
+
+
 });
 
 module.exports = mongoose.model('airbnb', AirbnbSchema);
