@@ -15,6 +15,10 @@ const AdminSchema = new mongoose.Schema({
     password: {
         type: mongoose.Schema.Types.String,
         required: true
+    },
+    image: {
+        type: mongoose.Schema.Types.String,
+        required: true
     }
 });
 

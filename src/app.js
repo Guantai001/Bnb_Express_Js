@@ -2,15 +2,20 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 
 const app = express();
 const port = 3001;
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Routes
 const airbnbRouter = require('./routes/airbnb');
 const adminRouter = require('./routes/authAdmins');
 const userRouter = require('./routes/authUser');
+const bnbImageRouter = require('./routes/bnbImage');
 const MongoStore = require('connect-mongo');
+
 
 require('./database');
 // require('./strategies/local');
@@ -49,7 +54,8 @@ app.use(passport.session());
 // Routes middleware
 app.use('/api/airbnb', airbnbRouter);
 app.use('/api/admin', adminRouter);  
-app.use('/api/user', userRouter);                   
+app.use('/api/user', userRouter); 
+app.use('/api/bnbimage', bnbImageRouter);                  
 
 
 app.listen(port, () => {

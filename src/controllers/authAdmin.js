@@ -3,46 +3,84 @@ const {
     hashPassword,
     comparePassword
 } = require('../utils/helpers');
+const multer = require('../utils/multer');
+const cloudinary = require('../utils/cloudinary');
+
+
 
 // register admin
 async function registerAdmin(req, res) {
-    const {
-        name,
-        email,
-        password
-    } = req.body;
-    const adminDb = await Admin.findOne({
-        email
-    }); // check if admin already exists
+    const { name, email, password } = req.body;
+
+    const adminDb = await Admin.findOne({ email }); // check if admin already exists
     if (adminDb) {
         return res.status(400).json({
             message: "Admin already exists"
         });
     } else {
-        const password = await hashPassword(req.body.password);
-        console.log(password);
-        const newAdmin = new Admin({
-            name,
-            email,
-            password
-        });
-        await newAdmin.save();
-        return res.status(201).json({
-            message: "Admin created successfully"
+        const hashedPassword = await hashPassword(password);
+        console.log(hashedPassword);
+
+        // Upload image to cloudinary using multer and cloudinary modules
+        const upload = multer.single('image'); // assuming the field name for the image is 'image' in the request body
+
+        upload(req, res, async function (err) {
+            if (err instanceof Error) { // Use instanceof Error instead of multer.MulterError
+                return res.status(500).json({
+                    message: "Image upload failed",
+                    error: err.message
+                });
+            } else if (err) {
+                return res.status(500).json({
+                    message: "Image upload failed",
+                    error: err.toString()
+                });
+            }
+
+            // Image upload successful, save admin details with image URL
+            try {
+                const result = await cloudinary.uploader.upload(req.file.path);
+                const image = result.secure_url;
+
+                const newAdmin = new Admin({
+                    name,
+                    email,
+                    password: hashedPassword,
+                    image
+                });
+                await newAdmin.save();
+
+                return res.status(201).json({
+                    message: "Admin created successfully"
+                });
+            } catch (error) {
+                return res.status(500).json({
+                    message: "Image upload failed",
+                    error: error.toString()
+                });
+            }
         });
     }
-
 }
+
+
+
+
 
 // login admin
 async function loginAdmin(req, res) {
-    const {email, password} = req.body;
+    const {
+        email,
+        password
+    } = req.body;
     if (!email || !password) {
         return res.status(400).json({
             message: "Please enter all fields"
         });
     }
-    const adminDb = await Admin.findOne({ email });
+    const adminDb = await Admin.findOne({
+        email
+    });
     if (!adminDb) {
         return res.status(400).json({
             message: "Email or password is incorrect"
@@ -50,11 +88,11 @@ async function loginAdmin(req, res) {
     }
     const isMatch = await comparePassword(password, adminDb.password);
     if (isMatch) {
-       req.session.admin = adminDb;
+        req.session.admin = adminDb;
         return res.status(200).json({
             message: "Login successful"
         });
-    }else {
+    } else {
         return res.status(400).json({
             message: "Invalid credentials"
         });

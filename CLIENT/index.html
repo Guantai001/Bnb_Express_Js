@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Admin</title>
+</head>
+<body>
+
+    <h1>Create Admin</h1>
+    
+    <!-- Form for creating an admin with an image -->
+    <form action="http://localhost:3001/api/bnbimage" method="POST" enctype="multipart/form-data">
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+
+        <input type="submit" value="Create Admin">
+    </form>
+    
+</body>
+</html>
