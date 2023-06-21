@@ -14,6 +14,8 @@ const airbnbRouter = require('./routes/airbnb');
 const adminRouter = require('./routes/authAdmins');
 const userRouter = require('./routes/authUser');
 const bnbImageRouter = require('./routes/bnbImage');
+const amenityRouter = require('./routes/amenities');
+const reserveRouter = require('./routes/reservation');
 const MongoStore = require('connect-mongo');
 
 
@@ -55,8 +57,9 @@ app.use(passport.session());
 app.use('/api/airbnb', airbnbRouter);
 app.use('/api/admin', adminRouter);  
 app.use('/api/user', userRouter); 
-app.use('/api/bnbimage', bnbImageRouter);                  
-
+app.use('/api/bnbimage', bnbImageRouter);   
+app.use('/api/amenity', amenityRouter);               
+app.use('/api/reservation', reserveRouter);
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
