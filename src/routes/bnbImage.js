@@ -40,17 +40,13 @@ router.post('/', uploader.single('image'), async (req, res) => {
                 message: "No image file provided",
             });
         }
-
         const result = await cloudinary.uploader.upload(req.file.path);
-
         // Create a new instance of the Image model
         const bnbImage = new Image({
             image: result.secure_url,
         });
-
         // Save the image to the database
         const savedImage = await bnbImage.save();
-
         return res.status(201).json({
             message: "Image uploaded successfully",
             image: savedImage,

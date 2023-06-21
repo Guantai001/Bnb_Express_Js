@@ -47,6 +47,5 @@ function logoutAdmin(req, res) {
 
 
 module.exports = {
-
     loginAdmin
 };

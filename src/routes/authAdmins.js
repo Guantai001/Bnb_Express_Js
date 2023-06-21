@@ -56,38 +56,6 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// // now update the admin name, email, password, image
-// router.patch('/:name', upload.single("image"), async (req, res) => {
-//     try {
-//         const admin = await Admin.findOne({ name: req.params.name });
-//         if (!admin) {
-//             return res.status(404).json({
-//                 message: "Admin not found"
-//             });
-//         }
-//         const result = await cloudinary.uploader.upload(req.file.path);
-//         admin.name = req.body.name;
-//         admin.email = req.body.email;
-//         admin.password = req.body.password;
-//         admin.image = result.secure_url;
-//         await admin.save();
-//         res.status(200).json({
-//             message: "Admin updated successfully",
-//             admin
-//         });
-//     } catch (error) {
-//         res.status(500).json({
-//             message: "Failed to update admin",
-//             error: error.message
-//         });
-//     }
-// });
-
-
-
-
-
-
 router.post('/register', upload.single("image"), async (req, res) => {
     try {
         // check if email already exists
@@ -142,9 +110,7 @@ router.patch('/:id', upload.single("image"), async (req, res) => {
         const result = await cloudinary.uploader.upload(req.file.path);
         admin.image = result.secure_url;
       }
-  
       await admin.save();
-  
       res.status(200).json({
         message: "Admin updated successfully",
         admin
