@@ -10,10 +10,20 @@
     <h1>Create Admin</h1>
     
     <!-- Form for creating an admin with an image -->
-    <form action="http://localhost:3001/api/bnbimage" method="POST" enctype="multipart/form-data">
-        <label for="image">Image:</label>
-        <input type="file" id="image" name="image" accept="image/*" required><br><br>
-
+    <form action="http://localhost:3001/api/admin/register" method="POST" enctype="multipart/form-data">
+    
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" placeholder="Name" required>
+        <br>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="Email" required>
+        <br>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <br>
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image" required>
+        <br>
         <input type="submit" value="Create Admin">
     </form>
     

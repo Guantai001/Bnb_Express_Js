@@ -3,65 +3,45 @@ const {
     hashPassword,
     comparePassword
 } = require('../utils/helpers');
-const multer = require('../utils/multer');
+const upload = require('../utils/multer');
 const cloudinary = require('../utils/cloudinary');
 
 
 
-// register admin
-async function registerAdmin(req, res) {
-    const { name, email, password } = req.body;
+// async function registerAdmin(req, res) {
 
-    const adminDb = await Admin.findOne({ email }); // check if admin already exists
-    if (adminDb) {
-        return res.status(400).json({
-            message: "Admin already exists"
-        });
-    } else {
-        const hashedPassword = await hashPassword(password);
-        console.log(hashedPassword);
+// Register admin
 
-        // Upload image to cloudinary using multer and cloudinary modules
-        const upload = multer.single('image'); // assuming the field name for the image is 'image' in the request body
-
-        upload(req, res, async function (err) {
-            if (err instanceof Error) { // Use instanceof Error instead of multer.MulterError
-                return res.status(500).json({
-                    message: "Image upload failed",
-                    error: err.message
-                });
-            } else if (err) {
-                return res.status(500).json({
-                    message: "Image upload failed",
-                    error: err.toString()
-                });
-            }
-
-            // Image upload successful, save admin details with image URL
-            try {
-                const result = await cloudinary.uploader.upload(req.file.path);
-                const image = result.secure_url;
-
-                const newAdmin = new Admin({
-                    name,
-                    email,
-                    password: hashedPassword,
-                    image
-                });
-                await newAdmin.save();
-
-                return res.status(201).json({
-                    message: "Admin created successfully"
-                });
-            } catch (error) {
-                return res.status(500).json({
-                    message: "Image upload failed",
-                    error: error.toString()
-                });
-            }
-        });
-    }
-}
+// async function registerAdmin(req, res) {
+//     const { name, email, password } = req.body;
+//     try {
+//         // Check if admin already exists
+//         const adminExists = await Admin.findOne({ email });
+//         if (adminExists) {
+//             return res.status(400).json({ message: 'Admin already exists' });
+//         }
+//         // Upload image to cloudinary
+//         const result = await cloudinary.uploader.upload(req.file.path);
+//         const adminImage = new Image({
+//             image: result.secure_url,
+//         });
+//         // Create a new instance of the Admin model
+//         const admin = new Admin({ name, email, password, image: adminImage });
+//         // Hash the admin's password
+//         admin.password = await hashPassword(password);
+//         // Save the admin to the database
+//         const savedAdmin = await admin.save();
+//         return res.status(201).json({
+//             message: 'Admin created successfully',
+//             admin: savedAdmin
+//         });
+//     } catch (error) {
+//         return res.status(500).json({
+//             message: 'Failed to create admin',
+//             error: error.message
+//         });
+//     }
+// }
 
 
 
@@ -111,6 +91,6 @@ function logoutAdmin(req, res) {
 
 
 module.exports = {
-    registerAdmin,
+
     loginAdmin
 };
