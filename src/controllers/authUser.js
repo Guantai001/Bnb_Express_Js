@@ -6,7 +6,6 @@ async function registerUser(req, res) {
     const { name, email, password, registrationMethod } = req.body;
     // Check if the user already exists
     const userDb = await User.findOne({ email });
-  
     if (userDb) {
       return res.status(400).json({ message: "User already exists" });
     } else {
@@ -24,7 +23,6 @@ async function registerUser(req, res) {
       return res.status(201).json({ message: "User created successfully" });
     }
   }
-
   
 // Login user
 async function loginUser(req, res) {
